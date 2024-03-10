@@ -52,6 +52,11 @@ function main() {
     const expectedNumberOfElements = buttonsToOverride.length - 1; // (minus 1 due to fullscreen has 2 variants)
     if (fixedDomElements !== expectedNumberOfElements) {
       fixDisneyPlayerUX();
+      document.body.querySelector("disney-web-player")
+        ?.shadowRoot
+        ?.querySelector("video")
+        ?.style
+        ?.setProperty("outline", "0", "important");
     }
   }, 1000);
 }
