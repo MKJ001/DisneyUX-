@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "DisneyUX+",
   "description": "Improves DinseyPlus UX by ensuring the spacebar only toggles between play and pause for video. It also removes blue video outline.",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "icons": {
     "16": "logo/disneyPlusUX_16.png",
     "32": "logo/disneyPlusUX_32.png",

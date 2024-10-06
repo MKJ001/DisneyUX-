@@ -1,19 +1,25 @@
 
 function main() {
-  const buttonsToOverride = [
-    "button.rwd-10sec-icon",
-    "button.ff-10sec-icon",
-    "button.fullscreen-icon",
-    "button.exit-fullscreen-icon",
-    "button.play-pause-icon",
-    "button.mute-btn",
-    ".audio-subtitles-control > button.control-icon-btn"
-  ];
   const markedAsFixedKey = "disney-fixed";
+  const expectedNumberOfFixedKeyElements = 3; // can't count shadowRoot buttons
+  
+  const getShadowRootButton = (body, selector) => {
+    return body.querySelector(selector)?.shadowRoot?.querySelector("info-tooltip button");
+  }
+
+  const buttonsToOverride = [
+    (body) => body.querySelector("button.mute-btn"),
+    (body) => body.querySelector("button.play-from-start-icon"),
+    (body) => body.querySelector(".audio-subtitles-control > button.control-icon-btn"),
+    (body) => getShadowRootButton(body, "quick-rewind"),
+    (body) => getShadowRootButton(body, "toggle-play-pause"),
+    (body) => getShadowRootButton(body, "quick-fast-forward"),
+    (body) => getShadowRootButton(body, "toggle-fullscreen-button"),
+  ];
 
   const fixDisneyPlayerUX = () => {
-    buttonsToOverride.forEach(buttonClass => {
-      const element = document.body.querySelector(`${buttonClass}`);
+    buttonsToOverride.forEach(getButton => {
+      const element = getButton(document.body);
       if (element == null) {
         return;
       }
@@ -39,7 +45,7 @@ function main() {
           e.stopImmediatePropagation();
           e.stopPropagation();
           e.preventDefault();
-          document.body.querySelector("button.play-pause-icon").click();
+          getShadowRootButton(document.body, "toggle-play-pause")?.click();
         }
       }, true);
 
@@ -49,11 +55,9 @@ function main() {
 
   setInterval(() => {
     const fixedDomElements = document.body.querySelectorAll(`[${markedAsFixedKey}="true"]`).length;
-    const expectedNumberOfElements = buttonsToOverride.length - 1; // (minus 1 due to fullscreen has 2 variants)
-    if (fixedDomElements !== expectedNumberOfElements) {
+    if (fixedDomElements !== expectedNumberOfFixedKeyElements) {
       fixDisneyPlayerUX();
       document.body.querySelector("disney-web-player")
-        ?.shadowRoot
         ?.querySelector("video")
         ?.style
         ?.setProperty("outline", "0", "important");
