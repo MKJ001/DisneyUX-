@@ -1,15 +1,15 @@
 
 function main() {
   const markedAsFixedKey = "disney-fixed";
-  const expectedNumberOfFixedKeyElements = 3; // can't count shadowRoot buttons
+  const expectedNumberOfFixedKeyElements = 1; // can't count shadowRoot buttons
   
   const getShadowRootButton = (body, selector) => {
     return body.querySelector(selector)?.shadowRoot?.querySelector("info-tooltip button");
   }
 
   const buttonsToOverride = [
-    (body) => body.querySelector("button.mute-btn"),
-    (body) => body.querySelector("button.play-from-start-icon"),
+    (body) => getShadowRootButton(body, "toggle-mute-button"),
+    (body) => getShadowRootButton(body, "restart-playback"),
     (body) => body.querySelector(".audio-subtitles-control > button.control-icon-btn"),
     (body) => getShadowRootButton(body, "quick-rewind"),
     (body) => getShadowRootButton(body, "toggle-play-pause"),
